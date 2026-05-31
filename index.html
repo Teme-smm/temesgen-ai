@@ -1,1 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temesgen.AI - Social Media for Restaurants & Local Businesses</title>
+<meta name="description" content="AI-assisted social media management for restaurants and local businesses in the US and UK. A two-week free trial. No contracts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
+/* ── TOKENS ── */
+:root{
+  --midnight:#070d18;
+  --midnight2:#0b1322;
+  --midnight3:#0f1a2e;
+  --midnight4:#152339;
+  --ice:#dff0f7;
+  --sky:#8ecde6;
+  --blue:#4aabcf;
+  --blue-bright:#5db8d8;
+  --deep:#1e7fa8;
+  --deeper:#155f80;
+  --white:#f4f8fb;
+  --muted:rgba(220,240,247,0.5);
+  --muted2:rgba(220,240,247,0.25);
+  --muted3:rgba(220,240,247,0.1);
+  --border:rgba(142,205,230,0.1);
+  --border2:rgba(142,205,230,0.22);
+  --border3:rgba(142,205,230,0.4);
+  --green:#4ade80;
+  --amber:#fbbf24;
+  color-scheme: dark;
+}
+html{scroll-behavior:smooth;font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:"Inter",sans-serif;
+  background:var(--midnight);
+  color:var(--white);
+  overflow-x:hidden;line-height:1.7;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--deep);color:white}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--midnight)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+
+/* ── BACKGROUND GLOW ── */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 0%,rgba(74,171,207,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 100%,rgba(30,127,168,0.04) 0%,transparent 60%);
+}
+
+/* ── CUSTOM CURSOR ── */
+#cur,#cur2{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transition:opacity .3s}
+#cur{width:7px;height:7px;background:var(--sky);transform:translate(-50%,-50%)}
+#cur2{
+  width:32px;height:32px;
+  border:1px solid rgba(142,205,230,.4);
+  transform:translate(-50%,-50%);
+  transition:width .35s,height .35s,border-color .35s;
+}
+body:not(:hover) #cur,body:not(:hover) #cur2{opacity:0}
+@media(pointer:coarse){#cur,#cur2{display:none}}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:24px 60px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  transition:padding .4s,background .4s,border-color .4s;
+}
+nav.s{
+  padding:14px 60px;
+  background:rgba(7,13,24,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  letter-spacing:.02em;display:flex;align-items:center;gap:9px;
+  flex-shrink:0;
+}
+.nav-logo-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--blue);
+  box-shadow:0 0 8px var(--blue);
+  animation:glow 2.5s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 6px var(--blue)}50%{box-shadow:0 0 18px var(--blue),0 0 32px rgba(74,171,207,.3)}}
+
+.nav-links{
+  display:flex;align-items:center;gap:30px;
+  flex:1;justify-content:center;
+}
+.nav-links a{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);transition:color .25s;
+  position:relative;padding:4px 0;
+}
+.nav-links a::after{
+  content:"";position:absolute;bottom:-3px;left:0;
+  width:0;height:1px;background:var(--sky);
+  transition:width .3s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-btn{
+  padding:10px 22px;
+  border:1px solid var(--border3);
+  color:var(--sky) !important;
+  border-radius:2px;font-size:11px !important;
+  letter-spacing:.16em;text-transform:uppercase;
+  transition:background .3s,color .3s !important;
+  white-space:nowrap;
+}
+.nav-btn::after{display:none !important}
+.nav-btn:hover{background:var(--blue) !important;color:var(--midnight) !important;border-color:var(--blue) !important}
+
+.nav-menu-btn{
+  display:none;width:38px;height:38px;
+  border-radius:3px;border:1px solid var(--border2);
+  background:transparent;color:var(--sky);
+  align-items:center;justify-content:center;font-size:16px;
+}
+
+.mobile-nav{
+  position:fixed;top:60px;left:0;right:0;z-index:499;
+  background:rgba(7,13,24,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:20px 28px;
+  flex-direction:column;gap:6px;display:none;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{
+  padding:12px 14px;border-radius:3px;
+  font-size:13px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);transition:color .2s,background .2s;
+}
+.mobile-nav a:hover{color:var(--white);background:rgba(142,205,230,.04)}
+.mobile-nav .m-cta{
+  margin-top:10px;text-align:center;
+  background:linear-gradient(135deg,var(--deep),var(--blue));
+  color:var(--white);font-weight:500;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:55% 45%;
+  position:relative;overflow:hidden;
+}
+.hero-l{
+  padding:160px 60px 100px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+.hero-l::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(142,205,230,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(142,205,230,.04) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:linear-gradient(135deg,black 40%,transparent 80%);
+}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:32px;
+  opacity:0;animation:slideUp .8s .15s ease forwards;
+}
+.eyebrow-line{width:34px;height:1px;background:linear-gradient(90deg,var(--blue),transparent)}
+.eyebrow-text{
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--sky);font-weight:500;
+}
+.eyebrow-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s infinite;
+  margin-right:4px;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 6px var(--green);transform:scale(1)}50%{box-shadow:0 0 14px var(--green);transform:scale(1.3)}}
+
+.hero h1{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:300;line-height:1.0;
+  color:var(--white);margin-bottom:10px;
+  font-size:clamp(46px,5.2vw,72px);
+  opacity:0;animation:slideUp .8s .3s ease forwards;
+}
+.hero h1 .l2{font-style:italic;color:var(--sky);display:block;font-weight:300}
+.hero h1 .l3{font-weight:600;display:block;color:var(--white)}
+
+.hero-rule{
+  width:0;height:1px;
+  background:linear-gradient(90deg,var(--blue),var(--deep),transparent);
+  margin:32px 0;
+  animation:expand .8s .6s ease forwards;
+}
+@keyframes expand{to{width:80px}}
+
+.hero-sub{
+  font-size:16px;color:var(--muted);font-weight:300;
+  line-height:1.85;max-width:430px;margin-bottom:48px;
+  opacity:0;animation:slideUp .8s .5s ease forwards;
+}
+.hero-sub strong{color:var(--ice);font-weight:500}
+
+.hero-btns{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:slideUp .8s .65s ease forwards;
+}
+.btn-p{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 30px;border-radius:2px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
+  background:linear-gradient(135deg,var(--deep),var(--blue));
+  color:var(--white);border:1px solid transparent;
+  position:relative;overflow:hidden;transition:transform .15s;
+}
+.btn-p::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--blue),var(--ice));
+  opacity:0;transition:opacity .35s;
+}
+.btn-p:hover::before{opacity:1}
+.btn-p:hover{color:var(--midnight);transform:translateY(-1px)}
+.btn-p span{position:relative;z-index:1}
+
+.btn-s{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 30px;border-radius:2px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:400;
+  border:1px solid var(--border2);color:var(--sky);
+  transition:border-color .3s,color .3s,transform .15s;
+}
+.btn-s:hover{border-color:var(--blue);color:var(--white);transform:translateY(-1px)}
+
+.hero-trust{
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+  margin-top:56px;padding-top:32px;
+  border-top:1px solid var(--border);
+  opacity:0;animation:slideUp .8s .8s ease forwards;
+}
+.trust-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:12.5px;color:var(--muted);
+}
+.trust-icon{font-size:13px;color:var(--sky)}
+
+/* hero right photo */
+.hero-r{
+  position:relative;overflow:hidden;
+  background:var(--midnight3);
+}
+.hero-photo{position:absolute;inset:0}
+.hero-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 12%;
+  filter:brightness(.82) saturate(.88) contrast(1.05);
+  opacity:0;animation:fadeIn 1.4s .3s ease forwards;
+}
+.hero-fade{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,var(--midnight) 0%,rgba(7,13,24,.1) 28%),
+    linear-gradient(0deg,var(--midnight) 0%,transparent 32%);
+}
+.hero-tint{
+  position:absolute;inset:0;
+  background:linear-gradient(145deg,transparent 55%,rgba(30,127,168,.08) 100%);
+}
+.hero-card{
+  position:absolute;z-index:10;
+  background:rgba(7,13,24,.85);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--border2);
+  border-radius:3px;padding:16px 20px;
+  animation:fadeIn 1s ease forwards;opacity:0;
+}
+.hero-card.c1{top:100px;right:32px;animation-delay:.9s}
+.hero-card.c2{bottom:100px;right:32px;animation-delay:1.1s}
+.hc-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.hc-val{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;color:var(--white);line-height:1}
+.hc-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.hc-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sky)}
+.hc-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:glow2 2s infinite;
+}
+@keyframes glow2{0%,100%{box-shadow:0 0 6px var(--green)}50%{box-shadow:0 0 14px var(--green)}}
+
+.hero-vtxt{
+  position:absolute;left:16px;top:50%;
+  transform:translateY(-50%) rotate(-90deg);
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(142,205,230,.2);z-index:10;white-space:nowrap;
+}
+
+/* ── MARQUEE ── */
+.marquee{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:18px 0;background:var(--midnight2);
+  overflow:hidden;position:relative;z-index:2;
+}
+.marquee-track{
+  display:flex;width:max-content;
+  animation:scroll 28s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  display:flex;align-items:center;gap:14px;padding:0 36px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.marquee-sep{width:4px;height:4px;border-radius:50%;background:var(--blue);opacity:.5;flex-shrink:0}
+
+/* ── SECTION ── */
+.section{padding:120px 60px;position:relative}
+.section-inner{max-width:1140px;margin:0 auto}
+.s-eye{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--sky);margin-bottom:20px;
+}
+.s-eye::before{content:"";width:28px;height:1px;background:var(--sky)}
+.s-h2{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(32px,3.8vw,52px);font-weight:300;
+  color:var(--white);line-height:1.08;margin-bottom:18px;
+}
+.s-h2 em{font-style:italic;color:var(--sky)}
+.s-p{font-size:15px;color:var(--muted);font-weight:300;line-height:1.85;max-width:540px}
+.center{text-align:center}
+.center .s-eye{justify-content:center}
+.center .s-eye::before{display:none}
+.center .s-p{margin-left:auto;margin-right:auto}
+
+/* ── AGENCY VS ME ── */
+.agency-section{background:var(--midnight2)}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:60px}
+.cmp{
+  border-radius:4px;padding:36px 32px;
+  border:1px solid var(--border);
+  background:var(--midnight3);
+  transition:border-color .3s,transform .3s;
+}
+.cmp:hover{transform:translateY(-2px)}
+.cmp.me{
+  background:linear-gradient(160deg,rgba(30,127,168,.15) 0%,var(--midnight3) 70%);
+  border-color:var(--blue);
+  box-shadow:0 0 0 1px var(--blue),0 10px 40px rgba(30,127,168,.15);
+}
+.cmp-head{
+  display:flex;align-items:center;gap:12px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  padding-bottom:20px;margin-bottom:20px;
+  border-bottom:1px solid var(--border);
+}
+.cmp-icon{
+  width:38px;height:38px;flex-shrink:0;
+  border:1px solid var(--border2);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+}
+.cmp.me .cmp-icon{background:var(--blue);border-color:var(--blue);color:var(--midnight)}
+.cmp ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.cmp li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14px;line-height:1.65;font-weight:300;
+}
+.cmp.agency li{color:var(--muted)}
+.cmp.me li{color:rgba(220,240,247,.85)}
+.cmp.agency li::before{content:"✗";color:#f87171;font-size:13px;font-weight:600;flex-shrink:0;margin-top:2px}
+.cmp.me li::before{content:"✓";color:var(--green);font-size:13px;font-weight:600;flex-shrink:0;margin-top:2px}
+
+/* ── PROCESS ── */
+.process-section{background:var(--midnight)}
+.process-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  position:relative;margin-top:72px;
+}
+.process-steps::before{
+  content:"";position:absolute;top:22px;
+  left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--border2) 80%,transparent);
+}
+.pstep{padding:0 24px;text-align:center}
+.pstep-c{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--border2);
+  background:var(--midnight);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:17px;font-weight:600;color:var(--sky);
+  position:relative;z-index:1;
+  transition:background .3s,border-color .3s,transform .3s;
+}
+.pstep:hover .pstep-c{
+  background:var(--deep);border-color:var(--blue);
+  transform:scale(1.08);
+}
+.pstep-t{
+  font-family:"Cormorant Garamond",serif;
+  font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;
+}
+.pstep-d{font-size:12.5px;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* ── PRICING ── */
+.pricing-section{background:var(--midnight2)}
+.pricing-head{text-align:center;margin-bottom:48px}
+
+.pricing-trust{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 22px;
+  background:linear-gradient(135deg,rgba(74,222,128,.07),rgba(74,222,128,.02));
+  border:1px solid rgba(74,222,128,.18);
+  border-radius:4px;
+  margin:0 auto 48px;max-width:680px;
+  font-size:13px;color:var(--ice);line-height:1.6;
+}
+.pricing-trust-ic{color:var(--green);flex-shrink:0;font-size:16px}
+.pricing-trust strong{color:var(--green);font-weight:500}
+
+.pkg-wrap{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  max-width:1140px;margin:0 auto;
+}
+.pkg{
+  background:var(--midnight2);
+  padding:44px 32px;position:relative;
+  transition:background .3s,transform .3s;
+}
+.pkg:hover{transform:translateY(-2px)}
+.pkg.feat{background:linear-gradient(160deg,rgba(30,127,168,.15) 0%,var(--midnight2) 60%)}
+.pkg-rec{
+  position:absolute;top:0;right:0;
+  background:var(--blue);color:var(--midnight);
+  font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  padding:6px 16px;
+}
+.pkg-tier{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;font-weight:600}
+.pkg-price{font-family:"Cormorant Garamond",serif;font-size:54px;font-weight:300;color:var(--white);line-height:1}
+.pkg-price sup{font-size:22px;vertical-align:top;margin-top:10px;font-weight:300}
+.pkg-price sub{font-size:14px;font-family:"Inter",sans-serif;color:var(--muted);font-weight:300}
+.pkg-rule{width:100%;height:1px;background:var(--border);margin:20px 0}
+.pkg-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:24px}
+.pkg-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.pkg-list li{font-size:13px;color:rgba(220,240,247,.65);display:flex;align-items:flex-start;gap:10px;font-weight:300}
+.pkg-list li::before{content:"—";color:var(--blue);flex-shrink:0;font-size:11px;margin-top:2px}
+.pkg-cta{
+  display:block;text-align:center;margin-top:32px;padding:12px;
+  border:1px solid var(--border2);
+  color:var(--sky);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  transition:all .3s;
+}
+.pkg-cta:hover{background:var(--blue);color:var(--midnight);border-color:var(--blue)}
+.pkg.feat .pkg-cta{background:linear-gradient(135deg,var(--deep),var(--blue));color:var(--white);border-color:transparent}
+.pkg.feat .pkg-cta:hover{opacity:.9}
+.pkg-note{
+  text-align:center;margin:24px auto 0;
+  font-size:12px;color:var(--muted);max-width:1140px;
+}
+.pkg-note a{color:var(--sky)}
+
+/* ── FREE TRIAL CTA BANNER ── */
+.trial{
+  background:linear-gradient(135deg,var(--deep) 0%,var(--blue) 100%);
+  border-radius:6px;padding:48px 56px;
+  display:grid;grid-template-columns:1fr auto;
+  gap:48px;align-items:center;
+  margin-top:60px;
+  position:relative;overflow:hidden;
+}
+.trial::before{
+  content:"";position:absolute;
+  top:-60px;right:-60px;width:300px;height:300px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.08);
+}
+.trial::after{
+  content:"";position:absolute;
+  bottom:-40px;left:30%;width:200px;height:200px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.06);
+}
+.trial-l{position:relative;z-index:1}
+.trial-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);font-weight:500;
+  margin-bottom:14px;
+}
+.trial h3{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(24px,2.8vw,34px);font-weight:600;
+  color:#fff;line-height:1.15;margin-bottom:12px;
+}
+.trial p{
+  font-size:14.5px;color:rgba(255,255,255,.78);
+  line-height:1.7;max-width:540px;font-weight:300;
+}
+.trial p strong{color:#fff;font-weight:500}
+.trial-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 32px;background:#fff;color:var(--deep);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  border-radius:2px;white-space:nowrap;
+  transition:transform .2s,box-shadow .2s;
+  position:relative;z-index:1;
+}
+.trial-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+
+/* ── PORTFOLIO / BEFORE-AFTER ── */
+.portfolio-section{background:var(--midnight)}
+.portfolio-head{margin-bottom:36px}
+.portfolio-note{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 22px;
+  background:rgba(142,205,230,.04);
+  border:1px solid var(--border);border-radius:4px;
+  margin-bottom:48px;
+  font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;
+}
+.portfolio-note-ic{color:var(--sky);flex-shrink:0}
+
+.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ba-card{
+  background:var(--midnight2);
+  border:1px solid var(--border);
+  border-radius:4px;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.ba-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+
+.ba-images{
+  display:grid;grid-template-columns:1fr 1fr;
+  position:relative;height:220px;
+}
+.ba-half{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+}
+.ba-half.before{background:var(--midnight3)}
+.ba-half.after{background:linear-gradient(135deg,var(--deep) 0%,var(--midnight3) 100%)}
+.ba-half-icon{font-size:36px;opacity:.6}
+.ba-half.after .ba-half-icon{opacity:.9}
+.ba-half-label{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+}
+.ba-half.after .ba-half-label{color:var(--sky)}
+.ba-half-text{font-size:11px;color:var(--muted2);text-align:center;padding:0 10px}
+.ba-divider{
+  position:absolute;top:0;bottom:0;left:50%;
+  width:1px;background:var(--blue);opacity:.5;z-index:1;
+}
+.ba-pill{
+  position:absolute;top:12px;
+  font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;backdrop-filter:blur(8px);z-index:2;
+}
+.ba-pill.b{left:12px;background:rgba(7,13,24,.7);color:var(--muted)}
+.ba-pill.a{right:12px;background:rgba(74,171,207,.85);color:var(--midnight)}
+
+.ba-info{padding:18px 20px}
+.ba-cat{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:6px}
+.ba-name{
+  font-family:"Cormorant Garamond",serif;
+  font-size:18px;font-weight:600;color:var(--white);margin-bottom:4px;
+}
+.ba-loc{font-size:12px;color:var(--muted);font-weight:300}
+
+/* ── ABOUT ── */
+.about-section{background:var(--midnight2)}
+.about-inner{
+  display:grid;grid-template-columns:380px 1fr;
+  gap:80px;align-items:start;
+}
+.about-img-wrap{position:relative}
+.about-img-outer{
+  position:relative;border-radius:4px 4px 60px 4px;overflow:hidden;
+  border:1px solid var(--border2);
+}
+.about-img-outer img{
+  width:100%;aspect-ratio:.82/1;object-fit:cover;object-position:center 8%;
+  filter:saturate(.9) brightness(.88);display:block;
+}
+.about-img-glow{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 60%,rgba(74,171,207,.1) 100%);
+}
+.about-corner{
+  position:absolute;bottom:-1px;right:-1px;width:80px;height:80px;
+  background:var(--midnight2);
+  border-top:1px solid var(--border2);border-left:1px solid var(--border2);
+  border-radius:60px 0 0 0;
+}
+.about-tag{
+  position:absolute;top:28px;left:-20px;
+  background:var(--midnight2);
+  border:1px solid var(--border2);
+  border-radius:3px;padding:14px 18px;
+  display:flex;flex-direction:column;gap:3px;
+}
+.about-tag-val{
+  font-family:"Cormorant Garamond",serif;
+  font-size:26px;font-weight:600;color:var(--sky);line-height:1;
+}
+.about-tag-l{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+.about-pills{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-top:18px;
+}
+.about-pill{
+  background:var(--midnight3);border:1px solid var(--border);
+  border-radius:3px;padding:14px 16px;
+}
+.about-pill-val{
+  font-family:"Cormorant Garamond",serif;
+  font-size:18px;font-weight:600;color:var(--white);line-height:1;
+}
+.about-pill-l{font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+
+.about-r .s-h2{margin-bottom:22px}
+.about-r p{
+  font-size:15px;color:var(--muted);font-weight:300;
+  line-height:1.9;margin-bottom:16px;
+}
+.about-r p strong{color:var(--ice);font-weight:500}
+.about-vals{
+  display:flex;flex-direction:column;gap:1px;
+  background:var(--border);margin-top:32px;
+  border:1px solid var(--border);
+}
+.aval{
+  background:var(--midnight2);
+  display:flex;gap:16px;align-items:flex-start;
+  padding:18px 20px;transition:background .3s;
+}
+.aval:hover{background:rgba(74,171,207,.04)}
+.aval-icon{
+  width:36px;height:36px;flex-shrink:0;
+  border:1px solid var(--border2);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.aval-t{font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px}
+.aval-d{font-size:12.5px;color:var(--muted);font-weight:300;line-height:1.6}
+
+/* ── REVIEWS PLACEHOLDER ── */
+.reviews-section{background:var(--midnight)}
+.reviews-empty{
+  border:1px dashed var(--border2);
+  border-radius:6px;padding:64px 48px;
+  text-align:center;max-width:680px;margin:0 auto;
+  background:rgba(142,205,230,.02);
+}
+.reviews-icon{font-size:36px;opacity:.4;margin-bottom:18px}
+.reviews-empty h3{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  margin-bottom:10px;
+}
+.reviews-empty p{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;max-width:440px;margin:0 auto}
+
+/* ── FAQ ── */
+.faq-section{background:var(--midnight2)}
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{
+  border-bottom:1px solid var(--border);
+  transition:background .2s;
+}
+.faq-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:22px 0;gap:18px;
+  background:none;border:none;
+  font-size:15.5px;font-weight:400;color:var(--white);
+  text-align:left;transition:color .2s;
+  font-family:"Inter",sans-serif;
+}
+.faq-btn:hover{color:var(--sky)}
+.faq-chevron{
+  width:18px;height:18px;flex-shrink:0;color:var(--sky);
+  transition:transform .3s;
+}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-ans{
+  font-size:14px;color:var(--muted);line-height:1.85;font-weight:300;
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .35s;
+}
+.faq-item.open .faq-ans{max-height:400px;padding-bottom:24px}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--midnight)}
+.contact-inner{
+  display:grid;grid-template-columns:1fr 1.2fr;
+  gap:96px;align-items:start;
+  max-width:1100px;margin:0 auto;
+}
+.contact-l .s-h2{margin-bottom:20px}
+.contact-l p{font-size:15px;color:var(--muted);font-weight:300;line-height:1.85;margin-bottom:40px}
+.cd{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.cd:last-child{border-bottom:none}
+.cd-ic{
+  width:38px;height:38px;
+  border:1px solid var(--border2);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;color:var(--sky);
+}
+.cd-l{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:2px}
+.cd-v{font-size:14px;color:var(--ice);font-weight:300}
+
+.cform{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.cfield{
+  background:var(--midnight);padding:18px 22px;
+  display:flex;flex-direction:column;gap:6px;
+  transition:background .3s;
+}
+.cfield:focus-within{background:rgba(74,171,207,.04)}
+.cfield label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:600}
+.cfield input,.cfield select,.cfield textarea{
+  background:transparent;border:none;outline:none;
+  font-family:"Inter",sans-serif;font-size:14px;color:var(--white);
+  font-weight:300;width:100%;resize:none;
+}
+.cfield input::placeholder,.cfield textarea::placeholder{color:var(--muted2)}
+.cfield select option{background:var(--midnight3)}
+.cfield-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.csubmit{
+  background:linear-gradient(135deg,var(--deep) 0%,var(--blue) 100%);
+  color:var(--white);padding:18px 32px;border:none;cursor:pointer;
+  font-family:"Inter",sans-serif;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  transition:opacity .3s;width:100%;margin-top:1px;
+}
+.csubmit:hover{opacity:.88}
+.csubmit.sent{background:linear-gradient(135deg,#1a5a3a,var(--green))}
+.cnote{
+  text-align:center;font-size:11.5px;color:var(--muted2);
+  letter-spacing:.04em;margin-top:14px;
+}
+
+/* ── FOOTER ── */
+footer{
+  padding:48px 60px 32px;
+  border-top:1px solid var(--border);
+  background:var(--midnight);
+}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:60px;margin-bottom:40px;
+  padding-bottom:40px;
+  border-bottom:1px solid var(--border);
+  max-width:1140px;margin-left:auto;margin-right:auto;
+}
+.f-logo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  display:flex;align-items:center;gap:9px;margin-bottom:14px;
+}
+.f-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.f-tag{font-size:13px;color:var(--muted);line-height:1.7;max-width:300px;font-weight:300}
+.f-col-title{font-size:10.5px;font-weight:600;color:var(--blue);letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.f-links a{font-size:13.5px;color:var(--muted);transition:color .2s;font-weight:300}
+.f-links a:hover{color:var(--sky)}
+.footer-bot{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+  max-width:1140px;margin:0 auto;
+}
+.f-copy{font-size:11.5px;color:var(--muted2);letter-spacing:.04em}
+.f-socials{display:flex;gap:10px}
+.f-social{
+  width:34px;height:34px;border-radius:3px;
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--muted);transition:all .2s;
+}
+.f-social:hover{border-color:var(--blue);color:var(--sky)}
+
+/* ── REVEAL ── */
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.vis{opacity:1;transform:none}
+.reveal.d1{transition-delay:.12s}
+.reveal.d2{transition-delay:.24s}
+.reveal.d3{transition-delay:.36s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:980px){
+  nav{padding:18px 26px}
+  nav.s{padding:14px 26px}
+  .nav-links{display:none}
+  .nav-menu-btn{display:flex}
+  .nav-btn{padding:8px 16px;font-size:10px !important}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-l{padding:110px 26px 60px}
+  .hero-r{height:55vw;min-height:280px}
+  .hero-card.c1{top:18px;right:18px;padding:12px 16px}
+  .hero-card.c2{bottom:18px;right:18px;padding:12px 16px}
+  .hero-vtxt{display:none}
+  .section{padding:80px 26px}
+  .cmp-grid{grid-template-columns:1fr;gap:18px;margin-top:40px}
+  .process-steps{grid-template-columns:1fr 1fr;gap:36px}
+  .process-steps::before{display:none}
+  .pkg-wrap{grid-template-columns:1fr}
+  .trial{grid-template-columns:1fr;text-align:left;padding:36px 28px;gap:24px}
+  .trial-btn{width:fit-content}
+  .ba-grid{grid-template-columns:1fr}
+  .about-inner{grid-template-columns:1fr;gap:48px}
+  .about-tag{left:0}
+  .contact-inner{grid-template-columns:1fr;gap:48px}
+  .cfield-row{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  footer{padding:36px 26px 26px}
+  .footer-bot{flex-direction:column;align-items:flex-start}
+  .hero-trust{gap:18px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    Temesgen.AI
+  </a>
+  <div class="nav-links">
+    <a href="#why">Why Me</a>
+    <a href="#process">Process</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#contact" class="nav-btn">Free Trial →</a>
+  <button class="nav-menu-btn" onclick="toggleMenu()" id="mb">☰</button>
+</nav>
+
+<div class="mobile-nav" id="mnav">
+  <a href="#why" onclick="closeMenu()">Why Me</a>
+  <a href="#process" onclick="closeMenu()">Process</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#work" onclick="closeMenu()">Work</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="#contact" onclick="closeMenu()" class="m-cta">Start free trial →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-l">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-dot"></div>
+      <div class="eyebrow-line"></div>
+      <div class="eyebrow-text">Available — Taking new clients</div>
+    </div>
+    <h1>
+      Social media,<br>
+      <span class="l2">handled with care,</span>
+      <span class="l3">for your business.</span>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">
+      I help restaurants, gyms, salons, and local businesses in the US and UK 
+      build a consistent, professional presence online — without the cost of an agency 
+      and without disrupting your daily work. <strong>Start with a two-week free trial.</strong>
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-p"><span>Start Free Trial →</span></a>
+      <a href="#work" class="btn-s">See Sample Work</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-icon">✦</span> 2-week free trial</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> No contracts</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> First month paid after work</div>
+    </div>
+  </div>
+
+  <div class="hero-r">
+    <div class="hero-photo">
+      <img src="https://i.ibb.co/YBZgJbB1/universal-upscale-0-c33b23b6-8605-4872-ac51-e1a5d609a447-0.jpg" alt="Temesgen - Social Media Strategist">
+      <div class="hero-fade"></div>
+      <div class="hero-tint"></div>
+    </div>
+    <div class="hero-card c1">
+      <div class="hc-label">Availability</div>
+      <div class="hc-status">
+        <div class="hc-dot"></div>
+        Open for new clients
+      </div>
+      <div class="hc-sub" style="margin-top:4px">Replies within 24 hours</div>
+    </div>
+    <div class="hero-card c2">
+      <div class="hc-label">Free trial duration</div>
+      <div class="hc-val">2 weeks</div>
+      <div class="hc-sub">No card needed, no obligation</div>
+    </div>
+    <div class="hero-vtxt">Temesgen.AI · 2025</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-item">Instagram Content <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Facebook Management <div class="marquee-sep"></div></div>
+    <div class="marquee-item">TikTok Strategy <div class="marquee-sep"></div></div>
+    <div class="marquee-item">LinkedIn Growth <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Monthly Reports <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Restaurant Marketing <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Local Business Growth <div class="marquee-sep"></div></div>
+    <div class="marquee-item">AI-Assisted Content <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Competitor Tracking <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Instagram Content <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Facebook Management <div class="marquee-sep"></div></div>
+    <div class="marquee-item">TikTok Strategy <div class="marquee-sep"></div></div>
+    <div class="marquee-item">LinkedIn Growth <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Monthly Reports <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Restaurant Marketing <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Local Business Growth <div class="marquee-sep"></div></div>
+    <div class="marquee-item">AI-Assisted Content <div class="marquee-sep"></div></div>
+    <div class="marquee-item">Competitor Tracking <div class="marquee-sep"></div></div>
+  </div>
+</div>
+
+<!-- WHY NOT AN AGENCY -->
+<section class="section agency-section" id="why">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="s-eye">Why work with me</div>
+      <h2 class="s-h2">A simpler alternative<br>to a <em>marketing agency</em></h2>
+      <p class="s-p">
+        Agencies do great work — but for most local businesses, they come with a price tag and process 
+        that simply does not fit. Here is an honest side-by-side.
+      </p>
+    </div>
+
+    <div class="cmp-grid">
+      <div class="cmp agency reveal d1">
+        <div class="cmp-head">
+          <div class="cmp-icon">🏢</div>
+          A typical agency
+        </div>
+        <ul>
+          <li>$2,000–$5,000+ per month</li>
+          <li>Requires professional photo and video shoots</li>
+          <li>Long onboarding, contracts, and lock-in periods</li>
+          <li>You work with account managers, not the people producing your content</li>
+          <li>You pay before any results are visible</li>
+          <li>Standardised approach, not tailored to small local businesses</li>
+        </ul>
+      </div>
+      <div class="cmp me reveal d2">
+        <div class="cmp-head">
+          <div class="cmp-icon">✦</div>
+          Working with me
+        </div>
+        <ul>
+          <li>Starts from $299/month — transparent, no surprises</li>
+          <li>Phone photos and videos are all you need — no shoots required</li>
+          <li>No contracts, no lock-in, cancel anytime</li>
+          <li>You work directly with me — no middlemen</li>
+          <li>Two-week free trial so you can judge the quality first</li>
+          <li>First month paid after delivery, not before</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section process-section" id="process">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <div class="s-eye" style="justify-content:center"><span style="display:none"></span>The Process</div>
+      <h2 class="s-h2 center">How it <em>works</em></h2>
+      <p class="s-p center">Four simple steps. No video calls if you'd rather not. Just send what you have and we begin.</p>
+    </div>
+    <div class="process-steps">
+      <div class="pstep reveal">
+        <div class="pstep-c">I</div>
+        <div class="pstep-t">You reach out</div>
+        <div class="pstep-d">Send a message with your Instagram handle and a short note about your business. That is all I need to start.</div>
+      </div>
+      <div class="pstep reveal d1">
+        <div class="pstep-c">II</div>
+        <div class="pstep-t">I review your pages</div>
+        <div class="pstep-d">I look at your current social media, your competitors, and identify the kind of content that could work well for you.</div>
+      </div>
+      <div class="pstep reveal d2">
+        <div class="pstep-c">III</div>
+        <div class="pstep-t">You share content</div>
+        <div class="pstep-d">Send me photos, videos, your menu, your branding — anything you already have. Phone photos work perfectly.</div>
+      </div>
+      <div class="pstep reveal d3">
+        <div class="pstep-c">IV</div>
+        <div class="pstep-t">I produce and post</div>
+        <div class="pstep-d">I create the content, write the captions, and post on your schedule. You see and approve everything before it goes live.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="pricing-head reveal">
+      <div class="s-eye" style="justify-content:center"><span style="display:none"></span>Pricing</div>
+      <h2 class="s-h2 center">Straightforward <em>monthly plans</em></h2>
+      <p class="s-p center">No hidden fees. No contracts. Cancel anytime.</p>
+    </div>
+
+    <div class="pricing-trust reveal">
+      <div class="pricing-trust-ic">✓</div>
+      <div>
+        <strong>Risk-free for the first month:</strong> 
+        you only pay after the work is delivered — so you can judge the quality before committing. 
+        After that, monthly in advance.
+      </div>
+    </div>
+
+    <div class="pkg-wrap">
+      <div class="pkg reveal">
+        <div class="pkg-tier">Starter</div>
+        <div class="pkg-price"><sup>$</sup>299<sub>/mo</sub></div>
+        <div class="pkg-rule"></div>
+        <div class="pkg-desc">For businesses getting started with consistent social media, or wanting to test a steady content rhythm.</div>
+        <ul class="pkg-list">
+          <li>16 posts per month (4 per week)</li>
+          <li>2 short Reels or videos</li>
+          <li>Captions + hashtags for every post</li>
+          <li>1 platform (Instagram or Facebook)</li>
+          <li>Monthly content calendar</li>
+          <li>Monthly performance summary</li>
+        </ul>
+        <a href="#contact" class="pkg-cta">Get Started</a>
+      </div>
+      <div class="pkg feat reveal d1">
+        <div class="pkg-rec">Recommended</div>
+        <div class="pkg-tier">Growth</div>
+        <div class="pkg-price"><sup>$</sup>499<sub>/mo</sub></div>
+        <div class="pkg-rule"></div>
+        <div class="pkg-desc">For restaurants, gyms, and salons wanting a consistent professional presence across multiple platforms.</div>
+        <ul class="pkg-list">
+          <li>24 posts per month</li>
+          <li>4 short Reels or videos</li>
+          <li>Captions, hashtags + stories</li>
+          <li>Instagram + Facebook</li>
+          <li>Monthly competitor check</li>
+          <li>Monthly strategy report</li>
+          <li>Content calendar shared in advance</li>
+        </ul>
+        <a href="#contact" class="pkg-cta">Get Started</a>
+      </div>
+      <div class="pkg reveal d2">
+        <div class="pkg-tier">Premium</div>
+        <div class="pkg-price"><sup>$</sup>799<sub>/mo</sub></div>
+        <div class="pkg-rule"></div>
+        <div class="pkg-desc">For established businesses wanting active management across all major platforms.</div>
+        <ul class="pkg-list">
+          <li>30 posts per month</li>
+          <li>6 Reels or short videos</li>
+          <li>All 4 platforms</li>
+          <li>Everything in Growth</li>
+          <li>Weekly content review</li>
+          <li>Basic static ad creative</li>
+        </ul>
+        <a href="#contact" class="pkg-cta">Get Started</a>
+      </div>
+    </div>
+
+    <p class="pkg-note">Not sure which fits? <a href="#contact">Send me a message</a> — no pressure, just a conversation.</p>
+
+    <!-- FREE TRIAL BANNER -->
+    <div class="trial reveal">
+      <div class="trial-l">
+        <div class="trial-eyebrow"><span>✦</span> Two-week free trial</div>
+        <h3>See the quality before you decide.</h3>
+        <p>
+          Send me your Instagram handle and a few photos. I will produce <strong>two weeks of content</strong> 
+          for your business — real posts, real captions, designed for your brand. 
+          <strong>No payment details. No obligation.</strong> 
+          If you find it valuable, we can talk about continuing.
+        </p>
+      </div>
+      <a href="#contact" class="trial-btn">Claim Free Trial →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO / BEFORE-AFTER -->
+<section class="section portfolio-section" id="work">
+  <div class="section-inner">
+    <div class="portfolio-head reveal">
+      <div class="s-eye">Sample work</div>
+      <h2 class="s-h2">Before &amp; after — <em>the difference consistency makes</em></h2>
+      <p class="s-p">
+        Examples below show the kind of transformation I aim for: ordinary raw content on the left, 
+        styled and on-brand on the right.
+      </p>
+    </div>
+    <div class="portfolio-note reveal d1">
+      <span class="portfolio-note-ic">✦</span>
+      <span>Real client samples will be added here soon. In the meantime, send me a message and I will create a free sample post for your specific business — no commitment.</span>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-card reveal">
+        <div class="ba-images">
+          <span class="ba-pill b">Before</span>
+          <span class="ba-pill a">After</span>
+          <div class="ba-half before">
+            <div class="ba-half-icon">🍝</div>
+            <div class="ba-half-label">Raw phone photo</div>
+            <div class="ba-half-text">Direct from your phone</div>
+          </div>
+          <div class="ba-half after">
+            <div class="ba-half-icon">✦</div>
+            <div class="ba-half-label">Styled &amp; on-brand</div>
+            <div class="ba-half-text">Ready for Instagram</div>
+          </div>
+          <div class="ba-divider"></div>
+        </div>
+        <div class="ba-info">
+          <div class="ba-cat">Restaurant</div>
+          <div class="ba-name">Pasta &amp; Italian</div>
+          <div class="ba-loc">Sample post coming soon</div>
+        </div>
+      </div>
+
+      <div class="ba-card reveal d1">
+        <div class="ba-images">
+          <span class="ba-pill b">Before</span>
+          <span class="ba-pill a">After</span>
+          <div class="ba-half before">
+            <div class="ba-half-icon">🏋️</div>
+            <div class="ba-half-label">Generic post</div>
+            <div class="ba-half-text">Off-brand visuals</div>
+          </div>
+          <div class="ba-half after">
+            <div class="ba-half-icon">✦</div>
+            <div class="ba-half-label">On-brand content</div>
+            <div class="ba-half-text">Studio personality</div>
+          </div>
+          <div class="ba-divider"></div>
+        </div>
+        <div class="ba-info">
+          <div class="ba-cat">Gym &amp; Fitness</div>
+          <div class="ba-name">Fitness Studio</div>
+          <div class="ba-loc">Sample post coming soon</div>
+        </div>
+      </div>
+
+      <div class="ba-card reveal d2">
+        <div class="ba-images">
+          <span class="ba-pill b">Before</span>
+          <span class="ba-pill a">After</span>
+          <div class="ba-half before">
+            <div class="ba-half-icon">✂️</div>
+            <div class="ba-half-label">Inconsistent feed</div>
+            <div class="ba-half-text">No visual identity</div>
+          </div>
+          <div class="ba-half after">
+            <div class="ba-half-icon">✦</div>
+            <div class="ba-half-label">Clean identity</div>
+            <div class="ba-half-text">Polished, professional</div>
+          </div>
+          <div class="ba-divider"></div>
+        </div>
+        <div class="ba-info">
+          <div class="ba-cat">Salon</div>
+          <div class="ba-name">Hair &amp; Beauty</div>
+          <div class="ba-loc">Sample post coming soon</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about-section" id="about">
+  <div class="section-inner">
+    <div class="about-inner">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-outer">
+          <img src="https://i.ibb.co/YBZgJbB1/universal-upscale-0-c33b23b6-8605-4872-ac51-e1a5d609a447-0.jpg" alt="Temesgen Agegnehu">
+          <div class="about-img-glow"></div>
+          <div class="about-corner"></div>
+        </div>
+        <div class="about-tag">
+          <div class="about-tag-val">AI</div>
+          <div class="about-tag-l">Assisted Workflow</div>
+        </div>
+        <div class="about-pills">
+          <div class="about-pill"><div class="about-pill-val">Addis Ababa</div><div class="about-pill-l">Based in Ethiopia</div></div>
+          <div class="about-pill"><div class="about-pill-val">US &amp; UK</div><div class="about-pill-l">Primary focus</div></div>
+          <div class="about-pill"><div class="about-pill-val">&lt; 24h</div><div class="about-pill-l">Response time</div></div>
+          <div class="about-pill"><div class="about-pill-val">2 weeks</div><div class="about-pill-l">Free to try</div></div>
+        </div>
+      </div>
+      <div class="about-r reveal d1">
+        <div class="s-eye">About me</div>
+        <h2 class="s-h2">I'm Temesgen —<br><em>I'll handle your social media</em><br>so you don't have to.</h2>
+        <p>
+          I am a social media manager based in Addis Ababa, Ethiopia, working with restaurants, 
+          gyms, salons, and local businesses in the <strong>US and UK</strong>. 
+          I use AI-assisted tools to produce content efficiently — which means I can charge a fraction 
+          of what an agency charges while still delivering consistent, professional work.
+        </p>
+        <p>
+          You do not need to organise photo shoots or hire a videographer. 
+          You send me whatever you have — photos of your food, your space, your menu, your team. 
+          From those I produce posts that feel native to your business. 
+          <strong>If you have branding or references you like, share them and I will follow them.</strong>
+        </p>
+        <p>
+          I am honest about what social media can and cannot do. 
+          It will not double your sales overnight. What it does is build a 
+          <strong>consistent, professional presence</strong> that makes your business 
+          look credible and active — which matters when people search for you online.
+        </p>
+        <div class="about-vals">
+          <div class="aval">
+            <div class="aval-icon">📸</div>
+            <div>
+              <div class="aval-t">You just send your photos</div>
+              <div class="aval-d">No professional shoots needed. Phone photos, menu pictures, anything you have — I work from there.</div>
+            </div>
+          </div>
+          <div class="aval">
+            <div class="aval-icon">💬</div>
+            <div>
+              <div class="aval-t">Direct communication, always</div>
+              <div class="aval-d">You work with me directly — never an agency account manager. Questions get answered quickly.</div>
+            </div>
+          </div>
+          <div class="aval">
+            <div class="aval-icon">🔄</div>
+            <div>
+              <div class="aval-t">You approve before anything goes live</div>
+              <div class="aval-d">The content calendar is shared with you in advance. Nothing is posted without your confirmation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS PLACEHOLDER -->
+<section class="section reviews-section" id="reviews">
+  <div class="section-inner">
+    <div style="text-align:center" class="reveal">
+      <div class="s-eye" style="justify-content:center"><span style="display:none"></span>Reviews</div>
+      <h2 class="s-h2 center">What clients say</h2>
+    </div>
+    <div class="reviews-empty reveal d1">
+      <div class="reviews-icon">✦</div>
+      <h3>No reviews here yet — I'm just getting started</h3>
+      <p>
+        I have not had my first client yet, so this space is honest and empty. 
+        If you decide to work with me and find the work valuable, I would appreciate an honest review here. 
+        That is how I plan to build trust over time.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" id="faq">
+  <div class="section-inner">
+    <div style="text-align:center" class="reveal">
+      <div class="s-eye" style="justify-content:center"><span style="display:none"></span>Questions</div>
+      <h2 class="s-h2 center">Things people <em>usually ask</em></h2>
+    </div>
+    <div class="faq-wrap" style="margin-top:48px">
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          Will I see more sales after a few weeks?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">Social media builds gradually — it is not a quick sales tool. What you will see quickly is a more professional and consistent presence online. When someone searches for your restaurant or gym and finds a well-maintained Instagram page, that matters. Sales come from trust, and trust is built slowly through consistency.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          Do I need to provide professional photos or videos?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">Not at all. Phone photos work perfectly. If you run a restaurant, a quick snap of a dish coming out of the kitchen is enough. When you have nothing to send for a particular week, I use high-quality free stock footage suited to your industry. You never have to organise a shoot.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          How does the free trial work?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">Send me a message with your Instagram handle, a little about your business, and any photos or references you have. I will create two weeks of content for your business — real posts, real captions — completely free. No payment details, no obligation. You can judge the quality and then decide whether to continue.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          You are based in Ethiopia — does the timezone cause problems?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">Not in practice. Content is planned and scheduled in advance, so everything goes out at the right time for your audience. I reply to messages within 24 hours. Many clients find working asynchronously quite smooth — you send updates when it suits you, I deliver without needing back-and-forth calls.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          How do I pay from the US or UK?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">I accept payments via Wise and Payoneer — both work like a local bank transfer from your side. You pay in USD or GBP. For the first month, payment is made after the work is delivered. After that, monthly in advance.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          Can I cancel if it is not working out?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">Yes, at any time. There are no contracts and no lock-in periods. If you want to pause or stop, simply let me know before the next billing date. I would rather earn your business each month than hold you to an agreement.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          Do I need to have a video call to start?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+        <div class="faq-ans">No. Everything can be handled over email or message. If you prefer a call we can arrange one, but it is never required. Many clients prefer to keep it simple — they send me their materials and references by message, and I work from there.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-section" id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div class="contact-l reveal">
+        <div class="s-eye">Get in touch</div>
+        <h2 class="s-h2">Let's start a<br><em>conversation.</em></h2>
+        <p>
+          If you are curious whether this could work for your business, 
+          send me a quick message. No pressure — just tell me a little about what you do 
+          and I will come back to you within 24 hours.
+        </p>
+        <div class="cd"><div class="cd-ic">📧</div><div><div class="cd-l">Email</div><div class="cd-v">info@temesgena.com</div></div></div>
+        <div class="cd"><div class="cd-ic">📱</div><div><div class="cd-l">Instagram</div><div class="cd-v">@temesgen.ai</div></div></div>
+        <div class="cd"><div class="cd-ic">⏱️</div><div><div class="cd-l">Response time</div><div class="cd-v">Within 24 hours</div></div></div>
+        <div class="cd"><div class="cd-ic">💳</div><div><div class="cd-l">Payment</div><div class="cd-v">Wise &amp; Payoneer — USD &amp; GBP</div></div></div>
+      </div>
+
+      <div class="reveal d1">
+        <form class="cform" id="cform" onsubmit="handleSubmit(event)">
+          <div class="cfield-row">
+            <div class="cfield">
+              <label>Your name</label>
+              <input type="text" placeholder="John Smith" required>
+            </div>
+            <div class="cfield">
+              <label>Business name</label>
+              <input type="text" placeholder="Mario's Restaurant" required>
+            </div>
+          </div>
+          <div class="cfield">
+            <label>Type of business</label>
+            <select required>
+              <option value="" disabled selected>Select your business type</option>
+              <option>Restaurant or Cafe</option>
+              <option>Gym or Fitness Studio</option>
+              <option>Salon or Barbershop</option>
+              <option>Coach or Consultant</option>
+              <option>Retail Shop</option>
+              <option>Bar</option>
+              <option>Real Estate</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="cfield">
+            <label>What you're interested in</label>
+            <select>
+              <option value="" disabled selected>Free trial / specific plan / exploring</option>
+              <option>Two-week free trial</option>
+              <option>Starter plan — $299/mo</option>
+              <option>Growth plan — $499/mo</option>
+              <option>Premium plan — $799/mo</option>
+              <option>Just exploring for now</option>
+            </select>
+          </div>
+          <div class="cfield">
+            <label>Your Instagram handle (optional)</label>
+            <input type="text" placeholder="@yourbusiness">
+          </div>
+          <div class="cfield">
+            <label>Email address</label>
+            <input type="email" placeholder="you@yourbusiness.com" required>
+          </div>
+          <div class="cfield">
+            <label>Anything you would like to share</label>
+            <textarea rows="3" placeholder="Your business, what you're hoping for, any references or examples you like..."></textarea>
+          </div>
+          <button type="submit" class="csubmit" id="submitBtn">
+            Send Message
+          </button>
+        </form>
+        <div class="cnote">Your information is not shared. I'll reply within 24 hours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="f-logo">
+        <div class="f-logo-dot"></div>
+        Temesgen.AI
+      </div>
+      <p class="f-tag">Social media management for restaurants and local businesses in the US and UK. Two-week free trial, no contracts.</p>
+    </div>
+    <div>
+      <div class="f-col-title">Pages</div>
+      <ul class="f-links">
+        <li><a href="#why">Why work with me</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#work">Sample work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="f-col-title">Contact</div>
+      <ul class="f-links">
+        <li><a href="mailto:info@temesgena.com">info@temesgena.com</a></li>
+        <li><a href="https://instagram.com/temesgen.ai" target="_blank">@temesgen.ai</a></li>
+        <li><a href="#contact">Start free trial</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <p class="f-copy">© 2025 Temesgen Agegnehu · All rights reserved</p>
+    <div class="f-socials">
+      <a href="https://instagram.com/temesgen.ai" target="_blank" class="f-social" aria-label="Instagram">📸</a>
+      <a href="mailto:info@temesgena.com" class="f-social" aria-label="Email">✉️</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cur=document.getElementById("cur"),cur2=document.getElementById("cur2");
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener("mousemove",function(e){
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+"px";cur.style.top=my+"px";
+});
+(function tick(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  cur2.style.left=rx+"px";cur2.style.top=ry+"px";
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll("a,button,select,input,textarea").forEach(function(el){
+  el.addEventListener("mouseenter",function(){cur2.style.width="52px";cur2.style.height="52px";cur2.style.borderColor="rgba(74,171,207,.7)";});
+  el.addEventListener("mouseleave",function(){cur2.style.width="32px";cur2.style.height="32px";cur2.style.borderColor="rgba(142,205,230,.4)";});
+});
+
+// Nav scroll
+window.addEventListener("scroll",function(){
+  document.getElementById("nav").classList.toggle("s",scrollY>60);
+});
+
+// Mobile menu
+var menuOpen=false;
+function toggleMenu(){
+  menuOpen=!menuOpen;
+  document.getElementById("mnav").classList.toggle("open",menuOpen);
+  document.getElementById("mb").textContent=menuOpen?"✕":"☰";
+}
+function closeMenu(){if(menuOpen)toggleMenu();}
+
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("vis");obs.unobserve(e.target);}});
+},{threshold:.05,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});
+document.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll(".reveal").forEach(function(el){
+    var rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight)el.classList.add("vis");
+  });
+});
+
+// FAQ
+function toggleFaq(btn){
+  var item=btn.closest(".faq-item");
+  var open=item.classList.contains("open");
+  document.querySelectorAll(".faq-item.open").forEach(function(i){i.classList.remove("open");});
+  if(!open)item.classList.add("open");
+}
+
+// ── EMAIL SYSTEM — Web3Forms ──
+function handleSubmit(e) {
+  e.preventDefault();
+  var btn = document.getElementById("submitBtn");
+  var form = document.getElementById("cform");
+
+  // Show loading state
+  btn.textContent = "Sending...";
+  btn.disabled = true;
+  btn.style.opacity = ".7";
+
+  // Build form data for Web3Forms
+  var formData = new FormData();
+  formData.append("access_key", "7c1a5e25-9978-49c1-a39e-4fe532126304");
+  formData.append("subject", "New enquiry from your website — Temesgen.AI");
+  formData.append("from_name", "Temesgen.AI Website");
+
+  // Add all form fields
+  var name     = document.getElementById("f-name").value;
+  var biz      = document.getElementById("f-biz").value;
+  var type     = document.getElementById("f-type").value;
+  var interest = document.getElementById("f-interest").value;
+  var ig       = document.getElementById("f-ig").value;
+  var email    = document.getElementById("f-email").value;
+  var msg      = document.getElementById("f-msg").value;
+
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("Business Name", biz);
+  formData.append("Business Type", type);
+  formData.append("Interested In", interest);
+  formData.append("Instagram", ig || "Not provided");
+  formData.append("Message", msg || "No message");
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      btn.textContent = "Message received — I will reply within 24 hours ✓";
+      btn.classList.add("sent");
+      btn.style.opacity = "1";
+      form.reset();
+    } else {
+      btn.textContent = "Something went wrong — email me directly at info@temesgena.com";
+      btn.style.opacity = "1";
+      btn.disabled = false;
+    }
+  })
+  .catch(function() {
+    btn.textContent = "Something went wrong — email me directly at info@temesgena.com";
+    btn.style.opacity = "1";
+    btn.disabled = false;
+  });
+}
+</script>
+
+</body>
+</html>

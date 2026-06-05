@@ -523,65 +523,110 @@ nav.s{
 }
 .trial-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 
-/* ── PORTFOLIO GALLERY ── */
-.portfolio-section{background:var(--midnight)}
-.portfolio-head{margin-bottom:36px}
+/* ── PORTFOLIO CAROUSEL ── */
+.portfolio-section{background:var(--midnight);overflow:hidden}
+.portfolio-head{margin-bottom:44px}
 
-.pf-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px}
-.pf-btn{
-  padding:9px 22px;border:1px solid var(--border);border-radius:99px;
-  background:transparent;color:var(--muted);font-size:11px;font-weight:500;
-  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:inherit;
-  transition:border-color .25s,color .25s,background .25s,transform .2s;
+.pf-carousel{
+  position:relative;
+  margin:0 -40px;
+  padding:30px 0;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);
 }
-.pf-btn:hover{border-color:var(--border2);color:var(--white);transform:translateY(-1px)}
-.pf-btn.active{background:var(--sky);border-color:var(--sky);color:var(--midnight);font-weight:600}
 
-.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pf-track{
+  display:flex;gap:22px;
+  width:max-content;
+  will-change:transform;
+  animation:pf-scroll 50s linear infinite;
+  cursor:grab;
+}
+.pf-track.paused{animation-play-state:paused}
+.pf-track:active{cursor:grabbing}
+
+@keyframes pf-scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
 
 .pf-item{
-  position:relative;border-radius:8px;overflow:hidden;cursor:pointer;
-  aspect-ratio:4/5;background:var(--midnight2);
-  opacity:0;transform:translateY(36px) scale(.97);
-  transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1),box-shadow .3s;
+  position:relative;flex-shrink:0;
+  width:300px;aspect-ratio:4/5;
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  background:var(--midnight2);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s;
 }
-.pf-item.pf-vis{opacity:1;transform:translateY(0) scale(1)}
-.pf-item:hover{box-shadow:0 24px 64px rgba(0,0,0,.6)}
-.pf-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
-.pf-item:hover img{transform:scale(1.08)}
+.pf-item:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 30px 70px rgba(0,0,0,.7),0 0 0 1px rgba(142,205,230,.25)}
+.pf-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.25,.46,.45,.94);pointer-events:none}
+.pf-item:hover img{transform:scale(1.1)}
 
 .pf-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(5,5,8,.93) 0%,rgba(5,5,8,.35) 50%,transparent 100%);
-  opacity:0;transition:opacity .3s;
-  display:flex;flex-direction:column;justify-content:flex-end;padding:22px;
+  background:linear-gradient(to top,rgba(5,5,8,.95) 0%,rgba(5,5,8,.3) 55%,transparent 100%);
+  opacity:0;transition:opacity .4s;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:24px;
+  pointer-events:none;
 }
 .pf-item:hover .pf-overlay{opacity:1}
 
 .pf-ov-icon{
   position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(.6);opacity:0;
-  width:54px;height:54px;border-radius:50%;
-  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.55);
-  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
-  font-size:22px;transition:opacity .3s .05s,transform .3s .05s;
+  transform:translate(-50%,-50%) scale(.5) rotate(-45deg);opacity:0;
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.6);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;
+  font-size:24px;color:#fff;
+  transition:opacity .4s .05s,transform .5s cubic-bezier(.34,1.56,.64,1) .05s;
 }
-.pf-item:hover .pf-ov-icon{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.pf-item:hover .pf-ov-icon{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
 
 .pf-ov-cat{
-  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--sky);font-weight:600;margin-bottom:6px;
-  opacity:0;transform:translateY(12px);
-  transition:opacity .32s .08s,transform .32s .08s;
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--sky);font-weight:600;margin-bottom:8px;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .4s .1s,transform .4s .1s;
 }
 .pf-item:hover .pf-ov-cat{opacity:1;transform:translateY(0)}
 
 .pf-ov-title{
-  font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);
-  opacity:0;transform:translateY(12px);
-  transition:opacity .32s .14s,transform .32s .14s;
+  font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;color:var(--white);
+  opacity:0;transform:translateY(16px);
+  transition:opacity .4s .18s,transform .4s .18s;
 }
 .pf-item:hover .pf-ov-title{opacity:1;transform:translateY(0)}
+
+/* Control buttons */
+.pf-controls{
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  margin-top:34px;
+}
+.pf-ctrl{
+  width:54px;height:54px;border-radius:50%;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  color:var(--white);font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,border-color .25s,transform .3s;
+  font-family:inherit;
+}
+.pf-ctrl:hover{background:var(--sky);border-color:var(--sky);color:var(--midnight)}
+.pf-ctrl.pf-prev:hover{transform:translateX(-4px)}
+.pf-ctrl.pf-next:hover{transform:translateX(4px)}
+.pf-ctrl.pf-play{font-size:14px}
+
+.pf-progress{
+  position:relative;
+  width:200px;height:2px;
+  background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;
+}
+.pf-progress-bar{
+  position:absolute;left:0;top:0;height:100%;
+  background:var(--sky);
+  width:0;
+  transition:width .2s linear;
+}
 
 /* Lightbox */
 .pf-lb{
@@ -1171,98 +1216,31 @@ footer{
       <p class="s-p">Every post crafted to match your brand voice, attract your ideal customer, and make your business impossible to scroll past.</p>
     </div>
 
-    <div class="pf-filters reveal d1">
-      <button class="pf-btn active" data-filter="all">All</button>
-      <button class="pf-btn" data-filter="restaurant">Restaurant</button>
-      <button class="pf-btn" data-filter="cafe">Cafe</button>
-      <button class="pf-btn" data-filter="bakery">Bakery</button>
-      <button class="pf-btn" data-filter="dessert">Dessert</button>
+    <div class="pf-carousel reveal d1">
+      <div class="pf-track" id="pf-track">
+        <!-- Items rendered + duplicated by JS for seamless loop -->
+      </div>
     </div>
 
-    <div class="pf-grid" id="pf-grid">
-
-      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Pasta &amp; Italian">
-        <img src="images/port-1.jpg" alt="Pasta post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Restaurant</div>
-          <div class="pf-ov-title">Pasta &amp; Italian</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="All-Day Brunch">
-        <img src="images/port-2.jpg" alt="Brunch post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Cafe</div>
-          <div class="pf-ov-title">All-Day Brunch</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Wagyu Sushi">
-        <img src="images/port-3.jpg" alt="Sushi post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Restaurant</div>
-          <div class="pf-ov-title">Wagyu Sushi</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="bakery" data-label="Bakery" data-title="Coffee &amp; Pastries">
-        <img src="images/port-4.jpg" alt="Bakery flatlay post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Bakery</div>
-          <div class="pf-ov-title">Coffee &amp; Pastries</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="dessert" data-label="Dessert" data-title="Sweet Treats">
-        <img src="images/port-5.jpg" alt="Dessert post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Dessert</div>
-          <div class="pf-ov-title">Sweet Treats</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Brunch Plate">
-        <img src="images/port-6.jpg" alt="Brunch plate post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Cafe</div>
-          <div class="pf-ov-title">Brunch Plate</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Cafe Spread">
-        <img src="images/port-7.jpg" alt="Cafe spread post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Cafe</div>
-          <div class="pf-ov-title">Cafe Spread</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Avocado &amp; Coffee">
-        <img src="images/port-8.jpg" alt="Avocado coffee post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Cafe</div>
-          <div class="pf-ov-title">Avocado &amp; Coffee</div>
-        </div>
-      </div>
-
-      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Wagyu Nigiri">
-        <img src="images/port-9.jpg" alt="Wagyu nigiri post" loading="lazy">
-        <div class="pf-overlay">
-          <div class="pf-ov-icon">↗</div>
-          <div class="pf-ov-cat">Restaurant</div>
-          <div class="pf-ov-title">Wagyu Nigiri</div>
-        </div>
-      </div>
-
+    <div class="pf-controls reveal d2">
+      <button class="pf-ctrl pf-prev" id="pf-prev" aria-label="Previous">‹</button>
+      <button class="pf-ctrl pf-play" id="pf-play" aria-label="Pause">❚❚</button>
+      <div class="pf-progress"><div class="pf-progress-bar" id="pf-progress"></div></div>
+      <button class="pf-ctrl pf-next" id="pf-next" aria-label="Next">›</button>
     </div>
+
+    <!-- Source items (hidden; JS will clone for the track) -->
+    <template id="pf-source">
+      <div class="pf-item" data-label="Restaurant" data-title="Pasta &amp; Italian" data-src="images/port-1.jpg"></div>
+      <div class="pf-item" data-label="Cafe" data-title="All-Day Brunch" data-src="images/port-2.jpg"></div>
+      <div class="pf-item" data-label="Restaurant" data-title="Wagyu Sushi" data-src="images/port-3.jpg"></div>
+      <div class="pf-item" data-label="Bakery" data-title="Coffee &amp; Pastries" data-src="images/port-4.jpg"></div>
+      <div class="pf-item" data-label="Dessert" data-title="Sweet Treats" data-src="images/port-5.jpg"></div>
+      <div class="pf-item" data-label="Cafe" data-title="Brunch Plate" data-src="images/port-6.jpg"></div>
+      <div class="pf-item" data-label="Cafe" data-title="Cafe Spread" data-src="images/port-7.jpg"></div>
+      <div class="pf-item" data-label="Cafe" data-title="Avocado &amp; Coffee" data-src="images/port-8.jpg"></div>
+      <div class="pf-item" data-label="Restaurant" data-title="Wagyu Nigiri" data-src="images/port-9.jpg"></div>
+    </template>
 
     <!-- Lightbox -->
     <div class="pf-lb" id="pf-lb">
@@ -1668,86 +1646,141 @@ function handleSubmit(e) {
   });
 }
 
-// ── PORTFOLIO GALLERY + LIGHTBOX ──
+// ── PORTFOLIO CAROUSEL + LIGHTBOX ──
 (function(){
-  var grid    = document.getElementById('pf-grid');
+  var track   = document.getElementById('pf-track');
+  var source  = document.getElementById('pf-source').content;
+  var srcItems = Array.from(source.querySelectorAll('.pf-item'));
   var lb      = document.getElementById('pf-lb');
   var lbImg   = document.getElementById('lb-img');
   var lbCat   = document.getElementById('lb-cat');
   var lbTit   = document.getElementById('lb-title');
   var lbCtr   = document.getElementById('lb-counter');
-  var allItems = Array.from(grid.querySelectorAll('.pf-item'));
-  var visItems = allItems.slice();
-  var idx = 0;
+  var progress = document.getElementById('pf-progress');
+  var playBtn  = document.getElementById('pf-play');
 
-  // Staggered scroll reveal
-  var pfObs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('pf-vis'); pfObs.unobserve(e.target); }
-    });
-  },{threshold:.08});
-  allItems.forEach(function(el,i){
-    el.style.transitionDelay = (i % 3) * 0.1 + 's';
-    pfObs.observe(el);
-  });
+  // Build markup for one slide
+  function buildItem(data){
+    var el = document.createElement('div');
+    el.className = 'pf-item';
+    el.dataset.label = data.dataset.label;
+    el.dataset.title = data.dataset.title;
+    el.dataset.src   = data.dataset.src;
+    el.innerHTML =
+      '<img src="'+ data.dataset.src +'" alt="'+ data.dataset.title +'" loading="lazy">' +
+      '<div class="pf-overlay">' +
+        '<div class="pf-ov-icon">↗</div>' +
+        '<div class="pf-ov-cat">'+ data.dataset.label +'</div>' +
+        '<div class="pf-ov-title">'+ data.dataset.title +'</div>' +
+      '</div>';
+    return el;
+  }
 
-  // Filter buttons
-  document.querySelectorAll('.pf-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.pf-btn').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      var f = btn.dataset.filter;
-      visItems = [];
-      allItems.forEach(function(it){
-        var show = f === 'all' || it.dataset.cat === f;
-        it.style.display = show ? '' : 'none';
-        if(show) visItems.push(it);
-      });
-    });
-  });
+  // Fill the track twice so the CSS -50% translate produces a seamless loop
+  srcItems.forEach(function(it){ track.appendChild(buildItem(it)); });
+  srcItems.forEach(function(it){ track.appendChild(buildItem(it)); });
 
-  // Open lightbox on click
-  allItems.forEach(function(it){
+  var lbItems = Array.from(track.querySelectorAll('.pf-item')).slice(0, srcItems.length);
+  var lbIdx = 0;
+
+  // Open lightbox on click (only on original set, but bind to all)
+  track.querySelectorAll('.pf-item').forEach(function(it){
     it.addEventListener('click', function(){
-      idx = visItems.indexOf(it);
-      if(idx < 0) idx = 0;
-      openLb(idx);
+      var src = it.dataset.src;
+      lbIdx = lbItems.findIndex(function(x){ return x.dataset.src === src; });
+      if(lbIdx < 0) lbIdx = 0;
+      openLb(lbIdx);
     });
   });
 
+  // Animation progress bar — sync with CSS keyframe
+  var DURATION = 50000; // ms — must match CSS animation duration
+  var startTs = performance.now();
+  var paused = false;
+  var pauseOffset = 0;
+
+  function tick(){
+    if(!paused){
+      var elapsed = (performance.now() - startTs - pauseOffset) % DURATION;
+      var pct = (elapsed / DURATION) * 100;
+      progress.style.width = pct + '%';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // Pause/play
+  function setPaused(p){
+    paused = p;
+    track.classList.toggle('paused', p);
+    playBtn.textContent = p ? '▶' : '❚❚';
+    playBtn.setAttribute('aria-label', p ? 'Play' : 'Pause');
+    if(p){ pauseStart = performance.now(); }
+    else { pauseOffset += performance.now() - pauseStart; }
+  }
+  var pauseStart = 0;
+  playBtn.addEventListener('click', function(){ setPaused(!paused); });
+
+  // Pause on hover
+  var carousel = document.querySelector('.pf-carousel');
+  carousel.addEventListener('mouseenter', function(){ if(!paused) track.classList.add('paused'); });
+  carousel.addEventListener('mouseleave', function(){ if(!paused) track.classList.remove('paused'); });
+
+  // Manual prev/next — nudge translateX with a temporary inline transform
+  var manualOffset = 0;
+  var step = 322; // item width + gap
+
+  function nudge(dir){
+    if(!paused) setPaused(true);
+    manualOffset += dir * step;
+    // Read current animation translate and apply offset
+    track.style.transition = 'transform .6s cubic-bezier(.22,1,.36,1)';
+    track.style.animation = 'none';
+    var current = getComputedStyle(track).transform;
+    var x = 0;
+    if(current && current !== 'none'){
+      var m = current.match(/matrix.*\((.+)\)/);
+      if(m){ x = parseFloat(m[1].split(', ')[4]); }
+    }
+    var target = x - dir * step;
+    // Wrap around when needed (track is duplicated, so range is -trackWidth/2 .. 0)
+    var halfWidth = track.scrollWidth / 2;
+    if(target < -halfWidth) target += halfWidth;
+    if(target > 0) target -= halfWidth;
+    track.style.transform = 'translateX(' + target + 'px)';
+  }
+
+  document.getElementById('pf-prev').addEventListener('click', function(){ nudge(-1); });
+  document.getElementById('pf-next').addEventListener('click', function(){ nudge(1); });
+
+  // ── Lightbox ──
   function openLb(i){
-    var it = visItems[i];
+    var it = lbItems[i];
     if(!it) return;
-    lbImg.src = it.querySelector('img').src;
+    lbImg.src = it.dataset.src;
     lbCat.textContent  = it.dataset.label || '';
     lbTit.innerHTML    = it.dataset.title || '';
-    lbCtr.textContent  = (i + 1) + ' / ' + visItems.length;
+    lbCtr.textContent  = (i + 1) + ' / ' + lbItems.length;
     lb.classList.add('lb-open');
     document.body.style.overflow = 'hidden';
   }
-
   function closeLb(){
     lb.classList.remove('lb-open');
     document.body.style.overflow = '';
   }
-
   document.getElementById('lb-close').addEventListener('click', closeLb);
   lb.addEventListener('click', function(e){ if(e.target === lb) closeLb(); });
-
   document.getElementById('lb-prev').addEventListener('click', function(){
-    idx = (idx - 1 + visItems.length) % visItems.length;
-    openLb(idx);
+    lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; openLb(lbIdx);
   });
   document.getElementById('lb-next').addEventListener('click', function(){
-    idx = (idx + 1) % visItems.length;
-    openLb(idx);
+    lbIdx = (lbIdx + 1) % lbItems.length; openLb(lbIdx);
   });
-
   document.addEventListener('keydown', function(e){
     if(!lb.classList.contains('lb-open')) return;
     if(e.key === 'Escape')      closeLb();
-    if(e.key === 'ArrowLeft')  { idx = (idx - 1 + visItems.length) % visItems.length; openLb(idx); }
-    if(e.key === 'ArrowRight') { idx = (idx + 1) % visItems.length; openLb(idx); }
+    if(e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; openLb(lbIdx); }
+    if(e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbItems.length; openLb(lbIdx); }
   });
 })();
 </script>

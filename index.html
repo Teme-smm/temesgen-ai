@@ -523,66 +523,113 @@ nav.s{
 }
 .trial-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 
-/* ── PORTFOLIO / BEFORE-AFTER ── */
+/* ── PORTFOLIO GALLERY ── */
 .portfolio-section{background:var(--midnight)}
 .portfolio-head{margin-bottom:36px}
-.portfolio-note{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 22px;
-  background:rgba(142,205,230,.04);
-  border:1px solid var(--border);border-radius:4px;
-  margin-bottom:48px;
-  font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;
-}
-.portfolio-note-ic{color:var(--sky);flex-shrink:0}
 
-.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.ba-card{
-  background:var(--midnight2);
-  border:1px solid var(--border);
-  border-radius:4px;overflow:hidden;
-  transition:border-color .3s,transform .3s;
+.pf-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px}
+.pf-btn{
+  padding:9px 22px;border:1px solid var(--border);border-radius:99px;
+  background:transparent;color:var(--muted);font-size:11px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:inherit;
+  transition:border-color .25s,color .25s,background .25s,transform .2s;
 }
-.ba-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.pf-btn:hover{border-color:var(--border2);color:var(--white);transform:translateY(-1px)}
+.pf-btn.active{background:var(--sky);border-color:var(--sky);color:var(--midnight);font-weight:600}
 
-.ba-images{
-  display:grid;grid-template-columns:1fr 1fr;
-  position:relative;height:220px;
-}
-.ba-half{
-  width:100%;height:100%;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:10px;
-}
-.ba-half.before{background:var(--midnight3)}
-.ba-half.after{background:linear-gradient(135deg,var(--deep) 0%,var(--midnight3) 100%)}
-.ba-half-icon{font-size:36px;opacity:.6}
-.ba-half.after .ba-half-icon{opacity:.9}
-.ba-half-label{
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);font-weight:600;
-}
-.ba-half.after .ba-half-label{color:var(--sky)}
-.ba-half-text{font-size:11px;color:var(--muted2);text-align:center;padding:0 10px}
-.ba-divider{
-  position:absolute;top:0;bottom:0;left:50%;
-  width:1px;background:var(--blue);opacity:.5;z-index:1;
-}
-.ba-pill{
-  position:absolute;top:12px;
-  font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
-  padding:3px 9px;border-radius:99px;backdrop-filter:blur(8px);z-index:2;
-}
-.ba-pill.b{left:12px;background:rgba(7,13,24,.7);color:var(--muted)}
-.ba-pill.a{right:12px;background:rgba(74,171,207,.85);color:var(--midnight)}
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 
-.ba-info{padding:18px 20px}
-.ba-cat{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:6px}
-.ba-name{
-  font-family:"Cormorant Garamond",serif;
-  font-size:18px;font-weight:600;color:var(--white);margin-bottom:4px;
+.pf-item{
+  position:relative;border-radius:8px;overflow:hidden;cursor:pointer;
+  aspect-ratio:4/5;background:var(--midnight2);
+  opacity:0;transform:translateY(36px) scale(.97);
+  transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1),box-shadow .3s;
 }
-.ba-loc{font-size:12px;color:var(--muted);font-weight:300}
+.pf-item.pf-vis{opacity:1;transform:translateY(0) scale(1)}
+.pf-item:hover{box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.pf-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.pf-item:hover img{transform:scale(1.08)}
+
+.pf-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,8,.93) 0%,rgba(5,5,8,.35) 50%,transparent 100%);
+  opacity:0;transition:opacity .3s;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:22px;
+}
+.pf-item:hover .pf-overlay{opacity:1}
+
+.pf-ov-icon{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.6);opacity:0;
+  width:54px;height:54px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+  font-size:22px;transition:opacity .3s .05s,transform .3s .05s;
+}
+.pf-item:hover .pf-ov-icon{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+.pf-ov-cat{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sky);font-weight:600;margin-bottom:6px;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .32s .08s,transform .32s .08s;
+}
+.pf-item:hover .pf-ov-cat{opacity:1;transform:translateY(0)}
+
+.pf-ov-title{
+  font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);
+  opacity:0;transform:translateY(12px);
+  transition:opacity .32s .14s,transform .32s .14s;
+}
+.pf-item:hover .pf-ov-title{opacity:1;transform:translateY(0)}
+
+/* Lightbox */
+.pf-lb{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(4,4,8,.97);backdrop-filter:blur(18px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.pf-lb.lb-open{opacity:1;pointer-events:all}
+
+.lb-wrap{
+  max-width:min(570px,86vw);
+  transform:scale(.88) translateY(22px);
+  transition:transform .42s cubic-bezier(.34,1.56,.64,1);
+}
+.pf-lb.lb-open .lb-wrap{transform:scale(1) translateY(0)}
+.lb-wrap img{
+  width:100%;display:block;border-radius:10px;
+  max-height:76vh;object-fit:contain;
+  box-shadow:0 40px 100px rgba(0,0,0,.85);
+}
+.lb-meta{display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px;padding:0 2px}
+.lb-meta-cat{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);font-weight:600;margin-bottom:5px}
+.lb-meta-title{font-family:"Cormorant Garamond",serif;font-size:21px;color:var(--white);font-weight:500}
+.lb-counter{font-size:12px;color:var(--muted);white-space:nowrap}
+
+.lb-close{
+  position:fixed;top:28px;right:32px;
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  color:var(--white);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;z-index:2;
+  transition:background .2s,transform .25s;
+}
+.lb-close:hover{background:rgba(255,255,255,.16);transform:rotate(90deg)}
+
+.lb-arrow{
+  position:fixed;top:50%;
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  color:var(--white);font-size:30px;cursor:pointer;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .25s;
+}
+.lb-prev{left:28px;transform:translateY(-50%)}
+.lb-next{right:28px;transform:translateY(-50%)}
+.lb-prev:hover{background:rgba(255,255,255,.16);transform:translateY(-50%) translateX(-3px)}
+.lb-next:hover{background:rgba(255,255,255,.16);transform:translateY(-50%) translateX(3px)}
 
 /* ── ABOUT ── */
 .about-section{background:var(--midnight2)}
@@ -827,7 +874,8 @@ footer{
   .pkg-wrap{grid-template-columns:1fr}
   .trial{grid-template-columns:1fr;text-align:left;padding:36px 28px;gap:24px}
   .trial-btn{width:fit-content}
-  .ba-grid{grid-template-columns:1fr}
+  .pf-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .lb-prev{left:12px}.lb-next{right:12px}
   .about-inner{grid-template-columns:1fr;gap:48px}
   .about-tag{left:0}
   .contact-inner{grid-template-columns:1fr;gap:48px}
@@ -1114,92 +1162,125 @@ footer{
   </div>
 </section>
 
-<!-- PORTFOLIO / BEFORE-AFTER -->
+<!-- PORTFOLIO -->
 <section class="section portfolio-section" id="work">
   <div class="section-inner">
     <div class="portfolio-head reveal">
       <div class="s-eye">Sample work</div>
-      <h2 class="s-h2">Before &amp; after — <em>the difference consistency makes</em></h2>
-      <p class="s-p">
-        Examples below show the kind of transformation I aim for: ordinary raw content on the left, 
-        styled and on-brand on the right.
-      </p>
+      <h2 class="s-h2">Content that <em>stops the scroll</em></h2>
+      <p class="s-p">Every post crafted to match your brand voice, attract your ideal customer, and make your business impossible to scroll past.</p>
     </div>
-    <div class="portfolio-note reveal d1">
-      <span class="portfolio-note-ic">✦</span>
-      <span>Real client samples will be added here soon. In the meantime, send me a message and I will create a free sample post for your specific business — no commitment.</span>
+
+    <div class="pf-filters reveal d1">
+      <button class="pf-btn active" data-filter="all">All</button>
+      <button class="pf-btn" data-filter="restaurant">Restaurant</button>
+      <button class="pf-btn" data-filter="cafe">Cafe</button>
+      <button class="pf-btn" data-filter="bakery">Bakery</button>
+      <button class="pf-btn" data-filter="dessert">Dessert</button>
     </div>
-    <div class="ba-grid">
-      <div class="ba-card reveal">
-        <div class="ba-images">
-          <span class="ba-pill b">Before</span>
-          <span class="ba-pill a">After</span>
-          <div class="ba-half before">
-            <div class="ba-half-icon">🍝</div>
-            <div class="ba-half-label">Raw phone photo</div>
-            <div class="ba-half-text">Direct from your phone</div>
-          </div>
-          <div class="ba-half after">
-            <div class="ba-half-icon">✦</div>
-            <div class="ba-half-label">Styled &amp; on-brand</div>
-            <div class="ba-half-text">Ready for Instagram</div>
-          </div>
-          <div class="ba-divider"></div>
-        </div>
-        <div class="ba-info">
-          <div class="ba-cat">Restaurant</div>
-          <div class="ba-name">Pasta &amp; Italian</div>
-          <div class="ba-loc">Sample post coming soon</div>
+
+    <div class="pf-grid" id="pf-grid">
+
+      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Pasta &amp; Italian">
+        <img src="images/port-1.jpg" alt="Pasta post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Restaurant</div>
+          <div class="pf-ov-title">Pasta &amp; Italian</div>
         </div>
       </div>
 
-      <div class="ba-card reveal d1">
-        <div class="ba-images">
-          <span class="ba-pill b">Before</span>
-          <span class="ba-pill a">After</span>
-          <div class="ba-half before">
-            <div class="ba-half-icon">🏋️</div>
-            <div class="ba-half-label">Generic post</div>
-            <div class="ba-half-text">Off-brand visuals</div>
-          </div>
-          <div class="ba-half after">
-            <div class="ba-half-icon">✦</div>
-            <div class="ba-half-label">On-brand content</div>
-            <div class="ba-half-text">Studio personality</div>
-          </div>
-          <div class="ba-divider"></div>
-        </div>
-        <div class="ba-info">
-          <div class="ba-cat">Gym &amp; Fitness</div>
-          <div class="ba-name">Fitness Studio</div>
-          <div class="ba-loc">Sample post coming soon</div>
+      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="All-Day Brunch">
+        <img src="images/port-2.jpg" alt="Brunch post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Cafe</div>
+          <div class="pf-ov-title">All-Day Brunch</div>
         </div>
       </div>
 
-      <div class="ba-card reveal d2">
-        <div class="ba-images">
-          <span class="ba-pill b">Before</span>
-          <span class="ba-pill a">After</span>
-          <div class="ba-half before">
-            <div class="ba-half-icon">✂️</div>
-            <div class="ba-half-label">Inconsistent feed</div>
-            <div class="ba-half-text">No visual identity</div>
-          </div>
-          <div class="ba-half after">
-            <div class="ba-half-icon">✦</div>
-            <div class="ba-half-label">Clean identity</div>
-            <div class="ba-half-text">Polished, professional</div>
-          </div>
-          <div class="ba-divider"></div>
+      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Wagyu Sushi">
+        <img src="images/port-3.jpg" alt="Sushi post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Restaurant</div>
+          <div class="pf-ov-title">Wagyu Sushi</div>
         </div>
-        <div class="ba-info">
-          <div class="ba-cat">Salon</div>
-          <div class="ba-name">Hair &amp; Beauty</div>
-          <div class="ba-loc">Sample post coming soon</div>
+      </div>
+
+      <div class="pf-item" data-cat="bakery" data-label="Bakery" data-title="Coffee &amp; Pastries">
+        <img src="images/port-4.jpg" alt="Bakery flatlay post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Bakery</div>
+          <div class="pf-ov-title">Coffee &amp; Pastries</div>
+        </div>
+      </div>
+
+      <div class="pf-item" data-cat="dessert" data-label="Dessert" data-title="Sweet Treats">
+        <img src="images/port-5.jpg" alt="Dessert post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Dessert</div>
+          <div class="pf-ov-title">Sweet Treats</div>
+        </div>
+      </div>
+
+      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Brunch Plate">
+        <img src="images/port-6.jpg" alt="Brunch plate post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Cafe</div>
+          <div class="pf-ov-title">Brunch Plate</div>
+        </div>
+      </div>
+
+      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Cafe Spread">
+        <img src="images/port-7.jpg" alt="Cafe spread post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Cafe</div>
+          <div class="pf-ov-title">Cafe Spread</div>
+        </div>
+      </div>
+
+      <div class="pf-item" data-cat="cafe" data-label="Cafe" data-title="Avocado &amp; Coffee">
+        <img src="images/port-8.jpg" alt="Avocado coffee post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Cafe</div>
+          <div class="pf-ov-title">Avocado &amp; Coffee</div>
+        </div>
+      </div>
+
+      <div class="pf-item" data-cat="restaurant" data-label="Restaurant" data-title="Wagyu Nigiri">
+        <img src="images/port-9.jpg" alt="Wagyu nigiri post" loading="lazy">
+        <div class="pf-overlay">
+          <div class="pf-ov-icon">↗</div>
+          <div class="pf-ov-cat">Restaurant</div>
+          <div class="pf-ov-title">Wagyu Nigiri</div>
         </div>
       </div>
 
     </div>
+
+    <!-- Lightbox -->
+    <div class="pf-lb" id="pf-lb">
+      <button class="lb-close" id="lb-close">✕</button>
+      <button class="lb-arrow lb-prev" id="lb-prev">‹</button>
+      <button class="lb-arrow lb-next" id="lb-next">›</button>
+      <div class="lb-wrap">
+        <img src="" alt="" id="lb-img">
+        <div class="lb-meta">
+          <div>
+            <div class="lb-meta-cat" id="lb-cat"></div>
+            <div class="lb-meta-title" id="lb-title"></div>
+          </div>
+          <div class="lb-counter" id="lb-counter"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1586,6 +1667,89 @@ function handleSubmit(e) {
     btn.disabled = false;
   });
 }
+
+// ── PORTFOLIO GALLERY + LIGHTBOX ──
+(function(){
+  var grid    = document.getElementById('pf-grid');
+  var lb      = document.getElementById('pf-lb');
+  var lbImg   = document.getElementById('lb-img');
+  var lbCat   = document.getElementById('lb-cat');
+  var lbTit   = document.getElementById('lb-title');
+  var lbCtr   = document.getElementById('lb-counter');
+  var allItems = Array.from(grid.querySelectorAll('.pf-item'));
+  var visItems = allItems.slice();
+  var idx = 0;
+
+  // Staggered scroll reveal
+  var pfObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('pf-vis'); pfObs.unobserve(e.target); }
+    });
+  },{threshold:.08});
+  allItems.forEach(function(el,i){
+    el.style.transitionDelay = (i % 3) * 0.1 + 's';
+    pfObs.observe(el);
+  });
+
+  // Filter buttons
+  document.querySelectorAll('.pf-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.pf-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var f = btn.dataset.filter;
+      visItems = [];
+      allItems.forEach(function(it){
+        var show = f === 'all' || it.dataset.cat === f;
+        it.style.display = show ? '' : 'none';
+        if(show) visItems.push(it);
+      });
+    });
+  });
+
+  // Open lightbox on click
+  allItems.forEach(function(it){
+    it.addEventListener('click', function(){
+      idx = visItems.indexOf(it);
+      if(idx < 0) idx = 0;
+      openLb(idx);
+    });
+  });
+
+  function openLb(i){
+    var it = visItems[i];
+    if(!it) return;
+    lbImg.src = it.querySelector('img').src;
+    lbCat.textContent  = it.dataset.label || '';
+    lbTit.innerHTML    = it.dataset.title || '';
+    lbCtr.textContent  = (i + 1) + ' / ' + visItems.length;
+    lb.classList.add('lb-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLb(){
+    lb.classList.remove('lb-open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if(e.target === lb) closeLb(); });
+
+  document.getElementById('lb-prev').addEventListener('click', function(){
+    idx = (idx - 1 + visItems.length) % visItems.length;
+    openLb(idx);
+  });
+  document.getElementById('lb-next').addEventListener('click', function(){
+    idx = (idx + 1) % visItems.length;
+    openLb(idx);
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('lb-open')) return;
+    if(e.key === 'Escape')      closeLb();
+    if(e.key === 'ArrowLeft')  { idx = (idx - 1 + visItems.length) % visItems.length; openLb(idx); }
+    if(e.key === 'ArrowRight') { idx = (idx + 1) % visItems.length; openLb(idx); }
+  });
+})();
 </script>
 
 </body>
